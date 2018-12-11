@@ -172,10 +172,6 @@ vcs_getlatesttag() {
 # example:
 #   do_vcs "url#branch|revision|tag|commit=NAME" "folder"
 do_vcs() {
-    #START: this part is modified
-    do_print_status "${vcsFolder} ${vcsType}" "$green" "Up-to-date"
-        return 1
-    #END
     local vcsType="${1%::*}"
     local vcsURL="${1#*::}"
     [[ "$vcsType" = "$vcsURL" ]] && vcsType="git"
@@ -206,6 +202,13 @@ do_vcs() {
         fi
     fi
     [[ ! "$vcsFolder" ]] && vcsFolder="${vcsURL##*/}" && vcsFolder="${vcsFolder%.*}"
+
+    #START: this part is modified
+    if [[ $vcsFolder != "FFmpeg" ]]; then
+        do_print_status "${vcsFolder}" "Up-to-date"
+        return 1
+    fi
+    #END
 
     cd_safe "$LOCALBUILDDIR"
     if [[ ! -d "$vcsFolder-$vcsType" ]]; then
