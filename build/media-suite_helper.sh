@@ -172,6 +172,10 @@ vcs_getlatesttag() {
 # example:
 #   do_vcs "url#branch|revision|tag|commit=NAME" "folder"
 do_vcs() {
+    #START: this part is modified
+    do_print_status "${vcsFolder} ${vcsType}" "$green" "Up-to-date"
+        return 1
+    #END
     local vcsType="${1%::*}"
     local vcsURL="${1#*::}"
     [[ "$vcsType" = "$vcsURL" ]] && vcsType="git"
